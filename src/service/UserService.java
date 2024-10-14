@@ -41,8 +41,7 @@ public class UserService {
             if (checking.isCorrectPassword(password)) {
                 User user = users.get(email);
                 if (users.containsKey(email) && user.getPassword().equals(password)) {
-                    System.out.println("Авторизация прошла успешно!");
-                    System.out.println("Добро пожаловать, " + user.getName() + "!");
+                    System.out.print("УСПЕШНО!\n" + user.getName());
                     return user;
                 }
             }
@@ -54,25 +53,38 @@ public class UserService {
     }
 
     public void updateUserName(Scanner scanner) {
-        System.out.print("Введите новое имя:");
+        User user = authorizedUser(scanner);
+        System.out.println(" введите новое имя:");
         String newName = scanner.nextLine().trim();
-        User user = new User();
+
         user.setName(newName);
         users.replace(user.getEmail(), user);
         System.out.println("Имя обновлен. Ваше новое имя: " + user.getName());
     }
 
     public void updateUserEmail(Scanner scanner) {
-        System.out.print("Введите новый логин(Email)");
+        User user = authorizedUser(scanner);
+        System.out.print(" введите новый логин(Email): ");
         String newEmail = scanner.nextLine().trim();
-        User user = new User();
         user.setEmail(newEmail);
-        users.replace(user.getEmail(), user);
+        users.remove(user.getEmail());
+        users.put(newEmail, user);
         System.out.println("Логин(Email) обновлен. Новый логин(Email): " + user.getEmail());
     }
 
+    public void updateUserPassword(Scanner scanner) {
+        User user = authorizedUser(scanner);
+        System.out.println(" введите новый пароль (Password):");
+        String newPassword = scanner.nextLine().trim();
+
+        user.setPassword(newPassword);
+        users.replace(user.getEmail(), user);
+        System.out.println(user.getName() + " пароль обновлен. вы можете заходить в личный кабинет с новым паролем.");
+    }
+
+
     public void deleteUser(Scanner scanner) {
-        System.out.print("Для удаления введите логин(Email)");
+        System.out.print("Для удаления введите логин(Email): ");
         String email = scanner.nextLine().trim();
         if (checking.isCorrectEmail(email)) {
             System.out.print("Введите пароль (password): ");

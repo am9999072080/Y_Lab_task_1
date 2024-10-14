@@ -11,12 +11,11 @@ public class Main {
 
     private static final UserService userService = new UserService();
     private static User currentAuthorizedUser = null; // Текущий авторизованный пользователь
-    private static String input = "";
 
     private static void printWelcomeMessage() {
         System.out.println("\nДля запуска команды следует ввести нужную команду и нажать клавишу Enter");
         System.out.println("#1 - Зарегистрируйтесь, чтобы создать новую учетную запись(клавиша - 1);");
-        System.out.println("#2 - Для Входа в систем введите логин(E-mail) и пароль(клавиша - 2);");
+        System.out.println("#2 - Для входа в систему введите логин(E-mail) и пароль(клавиша - 2);");
         System.out.println("#3 - Удалить пользователя");
         System.out.println("#0 - Подтверждение выхода из системы(клавиша - 0).");
     }
@@ -74,10 +73,8 @@ public class Main {
 
     private static void userFunctions() {
         Scanner scan = new Scanner(System.in);
-
         printMessage();
-        input = scan.nextLine().trim().toLowerCase();
-
+        String input = scan.nextLine().trim().toLowerCase();
         switch (input) {
             case "1":
                 userService.updateUserName(scan);
@@ -86,6 +83,12 @@ public class Main {
             case "2":
 
                 userService.updateUserEmail(scan);
+                currentAuthorizedUser = null;
+                handleUserInput();
+                break;
+            case "3":
+
+                userService.updateUserPassword(scan);
                 currentAuthorizedUser = null;
                 handleUserInput();
                 break;
